@@ -1,4 +1,4 @@
-FROM davidkarlsen/docker-java:8u151
+FROM davidkarlsen/docker-java:8u161
 ARG MARID_VERSION=2.13.0
 RUN wget https://s3-us-west-2.amazonaws.com/opsgeniedownloads/repo/opsgenie-marid_${MARID_VERSION}_all.deb -O /tmp/marid.dpkg && \
 	dpkg -i /tmp/marid.dpkg && \
