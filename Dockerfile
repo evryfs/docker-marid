@@ -1,5 +1,5 @@
-FROM evryfs/docker-java:8u201
-ARG MARID_VERSION=2.13.2-1
+FROM evryfs/docker-java:java8
+ARG MARID_VERSION=2.13.2
 RUN wget https://s3-us-west-2.amazonaws.com/opsgeniedownloads/repo/opsgenie-marid_${MARID_VERSION}_all.deb -O /tmp/marid.dpkg && \
 	dpkg -i /tmp/marid.dpkg && \
 	rm /tmp/marid.dpkg && \
