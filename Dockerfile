@@ -7,4 +7,6 @@ RUN wget https://s3-us-west-2.amazonaws.com/opsgeniedownloads/repo/opsgenie-mari
 	chown -R opsgenie:opsgenie /var/log/opsgenie && \
 	apt update && apt -y install net-tools netcat vim && apt -y clean
 COPY run.sh /
+COPY log4j.properties /etc/opsgenie/marid/log.properties
+RUN ln -s /var/opsgenie/marid/scripts /scripts/gitsync
 CMD /run.sh
