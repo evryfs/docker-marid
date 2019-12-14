@@ -1,4 +1,4 @@
-FROM evryfs/docker-java:java8
+FROM quay.io/evryfs/base-java:java8
 ARG MARID_VERSION=2.15.0
 RUN wget https://s3-us-west-2.amazonaws.com/opsgeniedownloads/repo/opsgenie-marid_${MARID_VERSION}_all.deb -O /tmp/marid.dpkg && \
 	dpkg -i /tmp/marid.dpkg && \
