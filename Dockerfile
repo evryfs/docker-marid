@@ -1,4 +1,4 @@
-FROM quay.io/evryfs/base-java:java8-20201115
+FROM quay.io/evryfs/base-java:java8-20201126
 ARG MARID_VERSION=2.15.0
 RUN wget https://s3-us-west-2.amazonaws.com/opsgeniedownloads/repo/opsgenie-marid_${MARID_VERSION}_all.deb -O /tmp/marid.dpkg && \
 	dpkg -i /tmp/marid.dpkg && \
