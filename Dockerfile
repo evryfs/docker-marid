@@ -4,9 +4,7 @@ RUN curl -L --silent https://s3-us-west-2.amazonaws.com/opsgeniedownloads/repo/o
 	dpkg -i /tmp/marid.dpkg && \
 	rm /tmp/marid.dpkg && \
 	mkdir -p /var/log/opsgenie/marid && \
-	chown -R opsgenie:opsgenie /var/log/opsgenie && \
-	apt-get update && apt-get -y --no-install-recommends install net-tools netcat vim && apt-get -y clean && \
-	rm -rf /var/cache/apt /var/lib/apt/lists/* /tmp/* /var/tmp/*
+	chown -R opsgenie:opsgenie /var/log/opsgenie
 COPY run.sh /
 COPY log4j.properties /etc/opsgenie/marid/log.properties
 USER opsgenie
