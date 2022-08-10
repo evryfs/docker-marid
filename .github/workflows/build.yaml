@@ -1,0 +1,55 @@
+name: build
+on:
+  push:
+    branches:
+    - '*'
+    tags:
+    - '*'
+  pull_request:
+jobs:
+  build:
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      IMAGE: quay.io/evryfs/docker-marid
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - uses: brpaz/hadolint-action@v1.5.0
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+          ${{ env.IMAGE }}
+        # generate Docker tags based on the following events/attributes
+        tags: |
+          type=ref,event=tag
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha
+    - name: Login to quay.io
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v2
+      with:
+        registry: quay.io
+        username: ${{ secrets.QUAY_USERNAME }}
+        password: ${{ secrets.QUAY_PASSWORD }}
+    - name: Build and push
+      id: build-push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+    - uses: sigstore/cosign-installer@v2.5.0
+    - name: cosign
+      if: ${{ github.event_name != 'pull_request' }}
+      env:
+        COSIGN_EXPERIMENTAL: 1
+      #run: cosign sign --oidc-issuer ${env.ACTIONS_ID_TOKEN_REQUEST_URL} ${{ env.IMAGE }}
+      run: cosign sign --oidc-issuer https://token.actions.githubusercontent.com ${{ env.IMAGE }}@${{ steps.build-push.outputs.digest }}
